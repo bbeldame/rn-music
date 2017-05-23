@@ -17,7 +17,7 @@ export default class MusicComposer extends Component {
           accessibilityLabel="Learn more about this purple button"
         />
         <Text style={styles.welcome}>
-          Welcome to Music Composer !
+          Welcome to Musica Composer !
         </Text>
         <Text style={styles.instructions}>
           To get started, walk in my city
