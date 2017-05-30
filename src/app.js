@@ -5,9 +5,20 @@ import {
   Text,
   View,
   Button,
+  NativeModules,
 } from 'react-native';
 
+console.log(NativeModules);
+
 export default class MusicComposer extends Component {
+  //state = {
+  //  test: NativesModules.musicplayer.test(),
+  //}
+
+  test = NativeModules.MusicPlayer.test('https://api.soundcloud.com/tracks/261294648/download?secret_token=s-XefW5&client_id=cUa40O3Jg3Emvp6Tv4U6ymYYO50NUGpJ', (data) => {
+    console.log(data);
+  });
+
   render() {
     return (
       <View style={styles.container}>
@@ -20,7 +31,7 @@ export default class MusicComposer extends Component {
           Welcome to Musica Composer !
         </Text>
         <Text style={styles.instructions}>
-          To get started, walk in my city
+          To get started, walk in my city {this.test}
         </Text>
         <Text style={styles.instructions}>
           We will display you some ass dope music
