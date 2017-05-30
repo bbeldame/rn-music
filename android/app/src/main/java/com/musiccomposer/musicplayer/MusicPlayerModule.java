@@ -13,8 +13,14 @@ import android.net.Uri;
 import java.io.IOException;
 
 public class MusicPlayerModule extends ReactContextBaseJavaModule {
+    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private ReactApplicationContext context;
+    private float max_volume = (float) 0.0;
+
     public MusicPlayerModule(ReactApplicationContext reactContext) {
         super(reactContext);
+
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
     @Override
@@ -23,21 +29,42 @@ public class MusicPlayerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void test(String urlFromJs, Callback cb) {
+    public void newMusic(String urlFromJs, Boolean play, Callback cb) {
+      this.mediaPlayer.reset();
       Uri url = Uri.parse(urlFromJs);
-      MediaPlayer mediaPlayer = new MediaPlayer();
-      mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
       try {
-        mediaPlayer.setDataSource(getReactApplicationContext(), url);
+        this.mediaPlayer.setDataSource(getReactApplicationContext(), url);
       } catch (IOException e) {
         cb.invoke(e.getMessage());
       }
       try {
-        mediaPlayer.prepare();
+        this.mediaPlayer.prepare();
       } catch (IOException e) {
         cb.invoke(e.getMessage());
       }
-      mediaPlayer.start();
+      if (play) {
+        this.mediaPlayer.start();
+      }
       cb.invoke("OK");
+    }
+
+    @ReactMethod
+    public void play(Callback cb) {
+      if (this.mediaPlayer.isPlaying()) {
+        this.mediaPlayer.seekTo(this.mediaPlayer.getCurrentPosition());
+      }
+      this.mediaPlayer.start();
+    }
+
+    @ReactMethod
+    public void pause(Callback cb) {
+      this.mediaPlayer.pause();
+    }
+
+    @ReactMethod
+    public void setVolume(double volume, Callback cb) {
+      float volumeFloat = (float) volume;
+      this.mediaPlayer.setVolume(volumeFloat / 100, volumeFloat / 100);
+      cb.invoke("Hey");
     }
 }

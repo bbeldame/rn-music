@@ -6,36 +6,110 @@ import {
   View,
   Button,
   NativeModules,
+  Slider,
 } from 'react-native';
+import { musics } from '../music.json';
 
 console.log(NativeModules);
 
 export default class MusicComposer extends Component {
-  //state = {
-  //  test: NativesModules.musicplayer.test(),
-  //}
+  constructor(props) {
+    super(props);
 
-  test = NativeModules.MusicPlayer.test('https://api.soundcloud.com/tracks/261294648/download?secret_token=s-XefW5&client_id=cUa40O3Jg3Emvp6Tv4U6ymYYO50NUGpJ', (data) => {
-    console.log(data);
-  });
+    this.state = {
+      currMusic: 0,
+    }
+  }
+
+  componentDidMount() {
+    NativeModules.MusicPlayer.newMusic(
+      musics[this.state.currMusic].url,
+      true,
+      function(data) {
+        console.log(data);
+      }
+    );
+  }
+
+  componentDidUpdate() {
+    NativeModules.MusicPlayer.newMusic(
+      musics[this.state.currMusic].url,
+      true,
+      function(data) {
+        console.log(data);
+      }
+    );
+  }
+
+  play = () => {
+    NativeModules.MusicPlayer.play((err) => { console.log('error', error); });
+  };
+
+  pause = () => {
+    NativeModules.MusicPlayer.pause((err) => { console.log('error', error); });
+  };
+
+  changeVolume = (value) => {
+    NativeModules.MusicPlayer.setVolume(value, (err) => {
+      console.log('error', err);
+    });
+  };
+
+  previous = () => {
+    if (this.state.currMusic == 0) {
+      this.setState({ currMusic: musics.length - 1 });
+    } else {
+      this.setState({ currMusic: this.state.currMusic - 1 });
+    }
+  };
+
+  next = () => {
+    if (this.state.currMusic == musics.length - 1) {
+      this.setState({ currMusic: 0 });
+    } else {
+      this.setState({ currMusic: this.state.currMusic + 1 });
+    }
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <Button
-          title="Learn More"
+          title="Play"
           color="#841584"
-          accessibilityLabel="Learn more about this purple button"
+          onPress={this.play}
+          accessibilityLabel="Play the current song"
         />
         <Text style={styles.welcome}>
-          Welcome to Musica Composer !
+          You are listening to {musics[this.state.currMusic].name} !
         </Text>
-        <Text style={styles.instructions}>
-          To get started, walk in my city {this.test}
-        </Text>
-        <Text style={styles.instructions}>
-          We will display you some ass dope music
-        </Text>
+        <Button
+          title="Pause"
+          color="#841584"
+          onPress={this.pause}
+          accessibilityLabel="Learn more about this purple button"
+        />
+        <Slider
+          minimumValue={0}
+          maximumValue={100}
+          onValueChange={this.changeVolume}
+          value={50}
+          style={ { width: '100%' } }
+        />
+        <View>
+          <Button
+            title="Previous"
+            color="#841584"
+            onPress={this.previous}
+            accessibilityLabel="Previous"
+          />
+          <Button
+            title="Next"
+            color="#841584"
+            onPress={this.next}
+            accessibilityLabel="Next"
+          />
+        </View>
       </View>
     );
   }
@@ -52,10 +126,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
 });
