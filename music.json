@@ -1,19 +1,26 @@
 {
   "musics": [
     {
-      "name": "Blobloblo",
+      "name": "Death from the sky",
+      "artist": "Richard Hendrick",
       "url": "https://api.soundcloud.com/tracks/261294648/download?secret_token=s-XefW5&client_id=cUa40O3Jg3Emvp6Tv4U6ymYYO50NUGpJ",
-      "releaseDate": "2007"
+      "releaseDate": "2004",
+      "coverId": "Kh3VInWNRII"
     },
     {
-      "name": "Blublublu",
+      "name": "Murder of my mother",
+      "artist": "Alfred Armorick",
       "url": "https://api.soundcloud.com/tracks/226400230/download?secret_token=s-iCQ82&client_id=cUa40O3Jg3Emvp6Tv4U6ymYYO50NUGpJ",
-      "releaseDate": "2007"
+      "releaseDate": "2017",
+      "coverId": "q8D4JalMsyU"
     },
     {
-      "name": "Bliblibli",
+      "name": "The killing of joy and life",
+      "artist": "Roger Ventura",
       "url": "https://api.soundcloud.com/tracks/310303367/download?secret_token=s-jQNIg&client_id=cUa40O3Jg3Emvp6Tv4U6ymYYO50NUGpJ",
-      "releaseDate": "2007"
-    },
-  ]
+      "releaseDate": "1993",
+      "coverId": "DRKknUyra0Y"
+    }
+  ],
+  "reverseIPAyekweather": "28f31bac02449448f82e7dbbf7a46335"
 }

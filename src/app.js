@@ -7,17 +7,21 @@ import {
   Button,
   NativeModules,
   Slider,
+  Image,
 } from 'react-native';
+import ProgressiveImage from './image'
 import { musics } from '../music.json';
-
-console.log(NativeModules);
+import getWeather from './getWeather';
 
 export default class MusicComposer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      error: null,
       currMusic: 0,
+      city: null,
+      weather: 'raining',
     }
   }
 
@@ -29,6 +33,13 @@ export default class MusicComposer extends Component {
         console.log(data);
       }
     );
+    navigator.geolocation.getCurrentPosition(
+      ({coords: { latitude, longitude }}) => {
+        this.getCity(latitude, longitude);
+      },
+      (error) => {console.log('error', error);},
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
   }
 
   componentDidUpdate() {
@@ -39,6 +50,15 @@ export default class MusicComposer extends Component {
         console.log(data);
       }
     );
+  }
+
+  async getCity(latitude, longitude) {
+    const weather = await getWeather(latitude, longitude);
+
+    this.setState({
+      city: weather.name,
+      weather: weather.weather[0].description,
+    });
   }
 
   play = () => {
@@ -72,20 +92,30 @@ export default class MusicComposer extends Component {
   };
 
   render() {
+    const coverId = musics[this.state.currMusic].coverId;
+    const cover = `https://source.unsplash.com/${coverId}/`;
+
     return (
-      <View style={styles.container}>
+      <ProgressiveImage
+        style={styles.backgroundImage}
+        thumbnailSource={{ uri: cover + '?30x30&bust=' + Math.random() }}
+        imageSource={{ uri: cover + '?bust=' + Math.random() }}
+        imageFadeDuration={500}
+      >
+        <Text style={styles.welcome}>
+          You are listening to {'\n'}
+          {musics[this.state.currMusic].name} {'\n'}
+          by {musics[this.state.currMusic].artist}
+        </Text>
         <Button
           title="Play"
-          color="#841584"
+          color="#FF0DFF"
           onPress={this.play}
           accessibilityLabel="Play the current song"
         />
-        <Text style={styles.welcome}>
-          You are listening to {musics[this.state.currMusic].name} !
-        </Text>
         <Button
           title="Pause"
-          color="#841584"
+          color="#FF0DFF"
           onPress={this.pause}
           accessibilityLabel="Learn more about this purple button"
         />
@@ -99,32 +129,38 @@ export default class MusicComposer extends Component {
         <View>
           <Button
             title="Previous"
-            color="#841584"
+            color="#FF0DFF"
             onPress={this.previous}
             accessibilityLabel="Previous"
           />
           <Button
             title="Next"
-            color="#841584"
+            color="#FF0DFF"
             onPress={this.next}
             accessibilityLabel="Next"
           />
         </View>
-      </View>
+        {this.state.city && <View>
+          <Text style={styles.welcome}>
+            You are in {this.state.city} and the weather is {this.state.weather} today !
+          </Text>
+        </View>}
+      </ProgressiveImage>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    fontWeight: '900',
+    color: '#000',
+  },
+  backgroundImage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

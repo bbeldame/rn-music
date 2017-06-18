@@ -7,8 +7,10 @@
 		"test": "jest"
 	},
 	"dependencies": {
+		"node-fetch": "^1.7.1",
 		"react": "16.0.0-alpha.6",
-		"react-native": "0.44.0"
+		"react-native": "0.44.0",
+		"react-native-progressive-image": "^1.0.4"
 	},
 	"devDependencies": {
 		"babel-eslint": "^7.2.3",
