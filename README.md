@@ -26,7 +26,6 @@ adb install -r musiccomposer.apk
 
 Or without any tool:
 
-`
 Go to :
 [https://github.com/bbeldame/rn-music/raw/master/musiccomposer.apk](https://github.com/bbeldame/rn-music/raw/master/musiccomposer.apk)
-`
+from any android phone
