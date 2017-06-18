@@ -2,7 +2,6 @@
 
 ## Features
 
-## Port forwarding and renaming on localhost made easy
 [![Demo](https://raw.githubusercontent.com/bbeldame/rn-music/master/demo.png)](https://raw.githubusercontent.com/bbeldame/rn-music/master/demo.png)
 
 City from geolocation
